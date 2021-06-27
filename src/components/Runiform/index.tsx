@@ -6,6 +6,7 @@ import {
   isFormInvalid,
   validatedAllFields,
 } from './helpers';
+import styles from './Runiform.module.scss';
 
 export const Runiform: React.FC<RuniformProps> = ({ fieldSet, onSubmit }) => {
   const initialState = createInitialState(fieldSet);
@@ -30,20 +31,20 @@ export const Runiform: React.FC<RuniformProps> = ({ fieldSet, onSubmit }) => {
   return (
     <form
       data-testid="form-element"
-      style={{ display: 'flex', flexDirection: 'column' }}
+      className={styles.form}
       onSubmit={handleSubmit}
     >
       {Object.keys(fieldSet).map((fieldName) => (
         <React.Fragment key={fieldName}>
           <label htmlFor={`runiform_${fieldName}`}>
-            {fieldSet[fieldName].label || fieldName}
+            {fieldSet[fieldName].label || fieldName}:
             <input
-              style={
-                state[fieldName].validationErrors.length
-                  ? { color: 'red', borderColor: 'red' }
-                  : {}
-              }
               id={`runiform_${fieldName}`}
+              className={
+                state[fieldName].validationErrors.length
+                  ? styles['input-with-error']
+                  : styles.input
+              }
               data-testid={`${fieldName}-element`}
               aria-label={fieldName}
               name={fieldName}

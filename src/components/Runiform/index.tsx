@@ -1,11 +1,18 @@
 import React from 'react';
 
+type ValidatorResult = string[];
+
+export type Validator = (
+  value: string,
+  prevResult: ValidatorResult
+) => ValidatorResult;
+
 type FieldOptions = Readonly<{
   type: 'text';
   value: string;
   label?: string;
   placeholder?: string;
-  validation?: (val: string) => boolean;
+  validation: Validator[];
 }>;
 
 type FieldSet = { [key: string]: FieldOptions };
@@ -20,7 +27,7 @@ type RuniformProps = {
 type RuniformReducerState = {
   [Property in keyof FieldSet]: {
     value: FieldSet[Property]['value'];
-    isValid: boolean;
+    validationErrors: ValidatorResult;
   };
 };
 
@@ -37,10 +44,16 @@ const transformConfigToInitialState = (
       ...state,
       [fieldName]: {
         value: fieldOptions.value,
-        isValid: true,
+        validationErrors: [],
       },
     }),
     {}
+  );
+
+const createValidation = (validators: Validator[]) => (value: string) =>
+  validators.reduce(
+    (result, validator) => validator(value, result),
+    [] as ValidatorResult
   );
 
 export const Runiform: React.FC<RuniformProps> = ({ fieldSet, onSubmit }) => {
@@ -55,10 +68,9 @@ export const Runiform: React.FC<RuniformProps> = ({ fieldSet, onSubmit }) => {
       [action.fieldName]: {
         ...state[action.fieldName],
         value: action.value,
-        // isValid: fieldSet[action.fieldName]?.validation?(action.value) ?? true,
-        isValid: fieldSet[action.fieldName].validation
-          ? fieldSet[action.fieldName].validation(action.value)
-          : true,
+        validationErrors: createValidation(
+          fieldSet[action.fieldName].validation
+        )(action.value),
       },
     },
   });
@@ -68,28 +80,34 @@ export const Runiform: React.FC<RuniformProps> = ({ fieldSet, onSubmit }) => {
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
       {Object.keys(fieldSet).map((fieldName) => (
-        <label htmlFor={`runiform_${fieldName}`}>
-          {fieldSet[fieldName].label || fieldName}
-          <input
-            style={
-              state[fieldName].isValid
-                ? {}
-                : { color: 'red', borderColor: 'red' }
-            }
-            key={fieldName}
-            id={`runiform_${fieldName}`}
-            name={fieldName}
-            type={fieldSet[fieldName].type}
-            value={state[fieldName].value}
-            placeholder={fieldSet[fieldName].placeholder}
-            onChange={(e) =>
-              dispatch({
-                fieldName,
-                value: e.target.value,
-              })
-            }
-          />
-        </label>
+        <React.Fragment key={fieldName}>
+          <label htmlFor={`runiform_${fieldName}`}>
+            {fieldSet[fieldName].label || fieldName}
+            <input
+              style={
+                state[fieldName].validationErrors.length
+                  ? { color: 'red', borderColor: 'red' }
+                  : {}
+              }
+              id={`runiform_${fieldName}`}
+              name={fieldName}
+              type={fieldSet[fieldName].type}
+              value={state[fieldName].value}
+              placeholder={fieldSet[fieldName].placeholder}
+              onChange={(e) =>
+                dispatch({
+                  fieldName,
+                  value: e.target.value,
+                })
+              }
+            />
+          </label>
+          <ul>
+            {state[fieldName].validationErrors.map((err) => (
+              <li key={`${fieldName}${err}`}>{err}</li>
+            ))}
+          </ul>
+        </React.Fragment>
       ))}
     </div>
   );

@@ -43,6 +43,6 @@ stories.add('default', () => (
         validation: [required, maxLength(10), startWith('Mr. ')],
       },
     }}
-    onSubmit={() => {}}
+    onSubmit={(val) => console.log(val)}
   />
 ));

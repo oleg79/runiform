@@ -77,6 +77,14 @@ export const Runiform: React.FC<RuniformProps> = ({ fieldSet, onSubmit }) => {
 
   const [state, dispatch] = React.useReducer(reducer, initialState);
 
+  const handleSubmit = () =>
+    onSubmit(
+      Object.entries(state).reduce(
+        (res, [name, data]) => ({ ...res, [name]: data.value }),
+        {}
+      )
+    );
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
       {Object.keys(fieldSet).map((fieldName) => (
@@ -109,6 +117,7 @@ export const Runiform: React.FC<RuniformProps> = ({ fieldSet, onSubmit }) => {
           </ul>
         </React.Fragment>
       ))}
+      <button onClick={handleSubmit}>Submit</button>
     </div>
   );
 };

@@ -32,23 +32,49 @@ export const createReducer =
   (fieldSet: FieldSet) =>
   (
     state: RuniformReducerState,
-    { type, payload }: RuniformReducerAction
+    action: RuniformReducerAction
   ): RuniformReducerState => {
-    switch (type) {
+    switch (action.type) {
       case ActionType.setValue:
         return {
           ...state,
           ...{
-            [payload.fieldName]: {
-              ...state[payload.fieldName],
-              value: payload.value,
+            [action.payload.fieldName]: {
+              ...state[action.payload.fieldName],
+              value: action.payload.value,
               validationErrors: createValidation(
-                fieldSet[payload.fieldName].validation
-              )(payload.value),
+                fieldSet[action.payload.fieldName].validation
+              )(action.payload.value),
             },
           },
         };
+      case ActionType.setErrors:
+        return { ...state, ...action.payload };
       default:
         return state;
     }
   };
+
+export const validatedAllFields = (
+  fieldSet: FieldSet,
+  state: RuniformReducerState
+): RuniformReducerState | null => {
+  const fieldsWithErrorsEntries = Object.entries(state).reduce(
+    (err: any[], [fieldName, data]) => {
+      const validationErrors = createValidation(fieldSet[fieldName].validation)(
+        data.value
+      );
+
+      return validationErrors.length
+        ? err.concat([[fieldName, { ...data, validationErrors }]])
+        : err;
+    },
+    []
+  );
+
+  if (!fieldsWithErrorsEntries.length) {
+    return null;
+  }
+
+  return Object.fromEntries(fieldsWithErrorsEntries);
+};

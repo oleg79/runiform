@@ -1,6 +1,11 @@
 import React from 'react';
 import { ActionType, RuniformProps } from './types';
-import { createInitialState, createReducer, isFormInvalid } from './helpers';
+import {
+  createInitialState,
+  createReducer,
+  isFormInvalid,
+  validatedAllFields,
+} from './helpers';
 
 export const Runiform: React.FC<RuniformProps> = ({ fieldSet, onSubmit }) => {
   const initialState = createInitialState(fieldSet);
@@ -13,8 +18,12 @@ export const Runiform: React.FC<RuniformProps> = ({ fieldSet, onSubmit }) => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (isFormSubmittable) {
+    const preSubmitErrors = validatedAllFields(fieldSet, state);
+
+    if (!preSubmitErrors && isFormSubmittable) {
       onSubmit(state);
+    } else if (preSubmitErrors) {
+      dispatch({ type: ActionType.setErrors, payload: preSubmitErrors });
     }
   };
 

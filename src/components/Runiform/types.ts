@@ -27,13 +27,20 @@ export enum ActionType {
   setErrors = 'setErrors',
 }
 
-export type RuniformReducerAction = {
-  type: ActionType;
+export type SetValueAction = {
+  type: ActionType.setValue;
   payload: {
     fieldName: keyof FieldSet;
     value: string;
   };
 };
+
+export type SetErrorAction = {
+  type: ActionType.setErrors;
+  payload: RuniformReducerState;
+};
+
+export type RuniformReducerAction = SetValueAction | SetErrorAction;
 
 export type RuniformProps = {
   fieldSet: FieldSet;

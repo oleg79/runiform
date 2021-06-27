@@ -3,6 +3,7 @@ import {
   createReducer,
   createValidation,
   isFormInvalid,
+  validatedAllFields,
 } from './helpers';
 import { ActionType, FieldSet } from './types';
 import { maxLength, minLength, required, startsWith } from './validators';
@@ -132,5 +133,54 @@ describe('createReducer', () => {
         ],
       },
     });
+  });
+});
+
+describe('validatedAllFields', () => {
+  const fieldSet: FieldSet = {
+    field1: {
+      type: 'text',
+      value: '',
+      validation: [required, minLength(4)],
+    },
+    field2: {
+      type: 'text',
+      value: '',
+      validation: [required, maxLength(20), startsWith('wooga.name')],
+    },
+  };
+
+  test.each([
+    [
+      {
+        field1: { value: 'value', validationErrors: [] },
+        field2: { value: 'wooga.name.value', validationErrors: [] },
+      },
+      null,
+    ],
+    [
+      {
+        field1: { value: '', validationErrors: [] },
+        field2: { value: 'some some some some some', validationErrors: [] },
+      },
+      {
+        field1: {
+          value: '',
+          validationErrors: [
+            'should not be empty',
+            'should have length more than 4',
+          ],
+        },
+        field2: {
+          value: 'some some some some some',
+          validationErrors: [
+            'should have length less than 20',
+            'should start with "wooga.name"',
+          ],
+        },
+      },
+    ],
+  ])('%s => %s', (state, result) => {
+    expect(validatedAllFields(fieldSet, state)).toEqual(result);
   });
 });

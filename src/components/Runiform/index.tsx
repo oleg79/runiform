@@ -1,80 +1,10 @@
 import React from 'react';
-
-type ValidatorResult = string[];
-
-export type Validator = (
-  value: string,
-  prevResult: ValidatorResult
-) => ValidatorResult;
-
-type FieldOptions = Readonly<{
-  type: 'text';
-  value: string;
-  label?: string;
-  placeholder?: string;
-  validation: Validator[];
-}>;
-
-type FieldSet = { [key: string]: FieldOptions };
-
-type RuniformReducerState = {
-  [Property in keyof FieldSet]: {
-    value: FieldSet[Property]['value'];
-    validationErrors: ValidatorResult;
-  };
-};
-
-type RuniformReducerAction = {
-  fieldName: keyof FieldSet;
-  value: string;
-};
-
-type RuniformProps = {
-  fieldSet: FieldSet;
-  onSubmit: (input: RuniformReducerState) => void;
-};
-
-const transformConfigToInitialState = (
-  fieldSet: FieldSet
-): RuniformReducerState =>
-  Object.entries(fieldSet).reduce(
-    (state, [fieldName, fieldOptions]) => ({
-      ...state,
-      [fieldName]: {
-        value: fieldOptions.value,
-        validationErrors: [],
-      },
-    }),
-    {}
-  );
-
-const createValidation = (validators: Validator[]) => (value: string) =>
-  validators.reduce(
-    (result, validator) => validator(value, result),
-    [] as ValidatorResult
-  );
-
-const isFormInvalid = (state: RuniformReducerState): boolean =>
-  Object.values(state).some(({ validationErrors }) => validationErrors.length);
+import {ActionType, RuniformProps} from './types';
+import { createInitialState, createReducer, isFormInvalid } from './helpers';
 
 export const Runiform: React.FC<RuniformProps> = ({ fieldSet, onSubmit }) => {
-  const initialState = transformConfigToInitialState(fieldSet);
-
-  const reducer = (
-    state: RuniformReducerState,
-    action: RuniformReducerAction
-  ) => ({
-    ...state,
-    ...{
-      [action.fieldName]: {
-        ...state[action.fieldName],
-        value: action.value,
-        validationErrors: createValidation(
-          fieldSet[action.fieldName].validation
-        )(action.value),
-      },
-    },
-  });
+  const initialState = createInitialState(fieldSet);
+  const reducer = createReducer(fieldSet);
 
   const [state, dispatch] = React.useReducer(reducer, initialState);
 
@@ -106,8 +36,11 @@ export const Runiform: React.FC<RuniformProps> = ({ fieldSet, onSubmit }) => {
               placeholder={fieldSet[fieldName].placeholder}
               onChange={(e) =>
                 dispatch({
-                  fieldName,
-                  value: e.target.value,
+                  type: ActionType.setValue,
+                  payload: {
+                    fieldName,
+                    value: e.target.value,
+                  },
                 })
               }
             />

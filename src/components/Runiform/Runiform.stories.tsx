@@ -1,7 +1,8 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 
-import { Runiform, Validator } from '.';
+import { Runiform } from '.';
+import { Validator } from './types';
 
 const stories = storiesOf('Runiform', module);
 

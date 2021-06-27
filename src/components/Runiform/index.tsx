@@ -8,14 +8,19 @@ export const Runiform: React.FC<RuniformProps> = ({ fieldSet, onSubmit }) => {
 
   const [state, dispatch] = React.useReducer(reducer, initialState);
 
+  const isFormSubmittable = !isFormInvalid(state);
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    onSubmit(state);
+    if (isFormSubmittable) {
+      onSubmit(state);
+    }
   };
 
   return (
     <form
+      data-testid="form-element"
       style={{ display: 'flex', flexDirection: 'column' }}
       onSubmit={handleSubmit}
     >
@@ -30,6 +35,8 @@ export const Runiform: React.FC<RuniformProps> = ({ fieldSet, onSubmit }) => {
                   : {}
               }
               id={`runiform_${fieldName}`}
+              data-testid={`${fieldName}-element`}
+              aria-label={fieldName}
               name={fieldName}
               type={fieldSet[fieldName].type}
               value={state[fieldName].value}
@@ -52,7 +59,7 @@ export const Runiform: React.FC<RuniformProps> = ({ fieldSet, onSubmit }) => {
           </ul>
         </React.Fragment>
       ))}
-      <button type="submit" disabled={isFormInvalid(state)}>
+      <button type="submit" disabled={!isFormSubmittable}>
         Submit
       </button>
     </form>

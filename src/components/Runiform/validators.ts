@@ -13,7 +13,7 @@ export const minLength =
 export const maxLength =
   (len: number): Validator =>
   (value, prevResult) =>
-    value.length < len
+    value.length <= len
       ? prevResult
       : prevResult.concat(`should have length less than ${len}`);
 

@@ -56,6 +56,9 @@ const createValidation = (validators: Validator[]) => (value: string) =>
     [] as ValidatorResult
   );
 
+const isFormInvalid = (state: RuniformReducerState): boolean =>
+  Object.values(state).some(({ validationErrors }) => validationErrors.length);
+
 export const Runiform: React.FC<RuniformProps> = ({ fieldSet, onSubmit }) => {
   const initialState = transformConfigToInitialState(fieldSet);
 
@@ -117,7 +120,9 @@ export const Runiform: React.FC<RuniformProps> = ({ fieldSet, onSubmit }) => {
           </ul>
         </React.Fragment>
       ))}
-      <button onClick={handleSubmit}>Submit</button>
+      <button onClick={handleSubmit} disabled={isFormInvalid(state)}>
+        Submit
+      </button>
     </div>
   );
 };

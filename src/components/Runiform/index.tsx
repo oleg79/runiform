@@ -17,13 +17,6 @@ type FieldOptions = Readonly<{
 
 type FieldSet = { [key: string]: FieldOptions };
 
-type RuniformProps = {
-  fieldSet: FieldSet;
-  onSubmit: (
-    input: { [Property in keyof FieldSet]: FieldSet[Property]['value'] }
-  ) => void;
-};
-
 type RuniformReducerState = {
   [Property in keyof FieldSet]: {
     value: FieldSet[Property]['value'];
@@ -34,6 +27,11 @@ type RuniformReducerState = {
 type RuniformReducerAction = {
   fieldName: keyof FieldSet;
   value: string;
+};
+
+type RuniformProps = {
+  fieldSet: FieldSet;
+  onSubmit: (input: RuniformReducerState) => void;
 };
 
 const transformConfigToInitialState = (
@@ -80,16 +78,17 @@ export const Runiform: React.FC<RuniformProps> = ({ fieldSet, onSubmit }) => {
 
   const [state, dispatch] = React.useReducer(reducer, initialState);
 
-  const handleSubmit = () =>
-    onSubmit(
-      Object.entries(state).reduce(
-        (res, [name, data]) => ({ ...res, [name]: data.value }),
-        {}
-      )
-    );
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    onSubmit(state);
+  };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column' }}>
+    <form
+      style={{ display: 'flex', flexDirection: 'column' }}
+      onSubmit={handleSubmit}
+    >
       {Object.keys(fieldSet).map((fieldName) => (
         <React.Fragment key={fieldName}>
           <label htmlFor={`runiform_${fieldName}`}>
@@ -120,9 +119,9 @@ export const Runiform: React.FC<RuniformProps> = ({ fieldSet, onSubmit }) => {
           </ul>
         </React.Fragment>
       ))}
-      <button onClick={handleSubmit} disabled={isFormInvalid(state)}>
+      <button type="submit" disabled={isFormInvalid(state)}>
         Submit
       </button>
-    </div>
+    </form>
   );
 };

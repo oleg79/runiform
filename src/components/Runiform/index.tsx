@@ -1,14 +1,24 @@
 import React from 'react';
-import { ActionType, RuniformProps } from './types';
+import { ActionType, FieldSet, RuniformReducerState } from './types';
 import {
   createInitialState,
   createReducer,
   isFormInvalid,
   validatedAllFields,
 } from './helpers';
-import styles from './Runiform.module.scss';
+import defaultStyles from './Runiform.module.scss';
 
-export const Runiform: React.FC<RuniformProps> = ({ fieldSet, onSubmit }) => {
+type RuniformProps = {
+  fieldSet: FieldSet;
+  onSubmit: (input: RuniformReducerState) => void;
+  styles?: typeof defaultStyles;
+};
+
+export const Runiform: React.FC<RuniformProps> = ({
+  fieldSet,
+  onSubmit,
+  styles = defaultStyles,
+}) => {
   const initialState = createInitialState(fieldSet);
   const reducer = createReducer(fieldSet);
 

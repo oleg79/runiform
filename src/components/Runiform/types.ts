@@ -41,8 +41,3 @@ export type SetErrorAction = {
 };
 
 export type RuniformReducerAction = SetValueAction | SetErrorAction;
-
-export type RuniformProps = {
-  fieldSet: FieldSet;
-  onSubmit: (input: RuniformReducerState) => void;
-};

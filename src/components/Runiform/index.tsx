@@ -1,5 +1,5 @@
 import React from 'react';
-import {ActionType, RuniformProps} from './types';
+import { ActionType, RuniformProps } from './types';
 import { createInitialState, createReducer, isFormInvalid } from './helpers';
 
 export const Runiform: React.FC<RuniformProps> = ({ fieldSet, onSubmit }) => {

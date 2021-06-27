@@ -17,7 +17,7 @@ stories.add('default', () => (
       lastName: {
         type: 'text',
         value: '',
-        validation: [required, maxLength(10), startsWith('Mr. ')],
+        validation: [required, maxLength(10), startsWith('wooga.name')],
       },
     }}
     onSubmit={(val) => console.log(val)}

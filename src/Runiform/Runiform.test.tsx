@@ -28,14 +28,22 @@ describe('Runiform', () => {
 
   it('should render a proper number of input fields', () => {
     const { getAllByRole } = render(
-      <Runiform fieldSet={fieldSet} onSubmit={handleSubmit} />
+      <Runiform
+        fieldSet={fieldSet}
+        onSubmit={handleSubmit}
+        submitText="submit"
+      />
     );
     expect(getAllByRole('textbox').length).toBe(2);
   });
 
   it('should not trigger onSubmit on invalid form', async () => {
     const { findByTestId } = render(
-      <Runiform fieldSet={fieldSet} onSubmit={handleSubmit} />
+      <Runiform
+        fieldSet={fieldSet}
+        onSubmit={handleSubmit}
+        submitText="submit"
+      />
     );
     const firstNameInput = await findByTestId('firstName-element');
     fireEvent.change(firstNameInput, { target: { value: 'val' } });
@@ -47,7 +55,11 @@ describe('Runiform', () => {
 
   it('should trigger onSubmit on valid form', async () => {
     const { findByTestId } = render(
-      <Runiform fieldSet={fieldSet} onSubmit={handleSubmit} />
+      <Runiform
+        fieldSet={fieldSet}
+        onSubmit={handleSubmit}
+        submitText="submit"
+      />
     );
 
     const firstNameInput = await findByTestId('firstName-element');

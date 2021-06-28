@@ -57,6 +57,7 @@ stories.add('default', () => (
           validators: [required('Please confirm')],
         },
       }}
+      submitText="Submit"
       onSubmit={(val) => console.log(val)}
     />
   </Container>

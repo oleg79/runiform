@@ -14,6 +14,7 @@ import { FieldProps } from './components/types';
 type RuniformProps = {
   fieldSet: FieldSet;
   onSubmit: (input: RuniformState) => void;
+  submitText: string;
   styles?: typeof defaultStyles;
 };
 
@@ -25,6 +26,7 @@ const typeToComponentMap: Record<InputType, React.FC<FieldProps<any>>> = {
 export const Runiform: React.FC<RuniformProps> = ({
   fieldSet,
   onSubmit,
+  submitText,
   styles = defaultStyles,
 }) => {
   const initialState = createInitialState(fieldSet);
@@ -72,7 +74,7 @@ export const Runiform: React.FC<RuniformProps> = ({
         type="submit"
         disabled={!isFormSubmittable}
       >
-        Submit
+        {submitText}
       </button>
     </form>
   );

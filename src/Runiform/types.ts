@@ -5,6 +5,11 @@ export type Validator<T> = (
   prevResult: ValidatorResult
 ) => ValidatorResult;
 
+export type ValidatorCreator<T> = (
+  message: string,
+  ...args: any[]
+) => Validator<T>;
+
 export enum InputType {
   text = 'text',
   checkbox = 'checkbox',

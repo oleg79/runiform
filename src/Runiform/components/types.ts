@@ -1,5 +1,5 @@
 import React from 'react';
-import { RuniformReducerAction } from '../types';
+import { RuniformAction } from '../types';
 
 export type FieldProps<T> = {
   fieldName: string;
@@ -8,5 +8,5 @@ export type FieldProps<T> = {
   styles: any;
   value: T;
   placeholder?: string;
-  dispatch: React.Dispatch<RuniformReducerAction<T>>;
+  dispatch: React.Dispatch<RuniformAction<T>>;
 };

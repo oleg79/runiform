@@ -1,7 +1,7 @@
 export type ValidatorResult = string[];
 
-export type Validator = (
-  value: string,
+export type Validator<T> = (
+  value: T,
   prevResult: ValidatorResult
 ) => ValidatorResult;
 
@@ -10,21 +10,31 @@ export enum InputType {
   checkbox = 'checkbox',
 }
 
-type CommonOptions<T> = T & {
-  type: InputType;
-  label?: string;
-  placeholder?: string;
-  validation: Validator[];
+export type ValuesTypeMap = {
+  [InputType.text]: string;
+  [InputType.checkbox]: boolean;
 };
 
-export type FieldOptions = CommonOptions<
-  | { type: InputType.text; value: string }
-  | { type: InputType.checkbox; value: boolean }
->;
+export type Validators<T> = Validator<T>[];
 
-export type FieldSet = { [key: string]: FieldOptions };
+type DistinctFields<T extends InputType> = {
+  type: T;
+  value: ValuesTypeMap[T];
+  validators: Validators<ValuesTypeMap[T]>;
+};
 
-export type RuniformReducerState = {
+type MakeFieldConfiguration<T extends InputType> = DistinctFields<T> & {
+  label?: string;
+  placeholder?: string;
+};
+
+export type FieldConfiguration =
+  | MakeFieldConfiguration<InputType.text>
+  | MakeFieldConfiguration<InputType.checkbox>;
+
+export type FieldSet = { [key: string]: FieldConfiguration };
+
+export type RuniformState = {
   [Property in keyof FieldSet]: {
     value: FieldSet[Property]['value'];
     validationErrors: ValidatorResult;
@@ -46,7 +56,7 @@ export type SetValueAction<T> = {
 
 export type SetErrorAction = {
   type: ActionType.setErrors;
-  payload: RuniformReducerState;
+  payload: RuniformState;
 };
 
-export type RuniformReducerAction<T> = SetValueAction<T> | SetErrorAction;
+export type RuniformAction<T> = SetValueAction<T> | SetErrorAction;

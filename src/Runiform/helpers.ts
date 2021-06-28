@@ -1,22 +1,26 @@
 import {
   ActionType,
   FieldSet,
-  RuniformReducerAction,
-  RuniformReducerState,
-  Validator,
+  InputType,
+  RuniformAction,
+  RuniformState,
   ValidatorResult,
+  Validators,
+  ValuesTypeMap,
 } from './types';
 
-export const createValidation = (validators: Validator[]) => (value: string) =>
-  validators.reduce<ValidatorResult>(
-    (result, validator) => validator(value, result),
-    []
-  );
+export const createValidation =
+  <T>(validators: Validators<T>) =>
+  (value: T) =>
+    validators.reduce<ValidatorResult>(
+      (result, validator) => validator(value, result),
+      []
+    );
 
-export const isFormInvalid = (state: RuniformReducerState): boolean =>
+export const isFormInvalid = (state: RuniformState): boolean =>
   Object.values(state).some(({ validationErrors }) => validationErrors.length);
 
-export const createInitialState = (fieldSet: FieldSet): RuniformReducerState =>
+export const createInitialState = (fieldSet: FieldSet): RuniformState =>
   Object.entries(fieldSet).reduce(
     (state, [fieldName, fieldOptions]) => ({
       ...state,
@@ -31,9 +35,9 @@ export const createInitialState = (fieldSet: FieldSet): RuniformReducerState =>
 export const createReducer =
   (fieldSet: FieldSet) =>
   (
-    state: RuniformReducerState,
-    action: RuniformReducerAction
-  ): RuniformReducerState => {
+    state: RuniformState,
+    action: RuniformAction<ValuesTypeMap[InputType]>
+  ): RuniformState => {
     switch (action.type) {
       case ActionType.setValue:
         return {
@@ -43,7 +47,7 @@ export const createReducer =
               ...state[action.payload.fieldName],
               value: action.payload.value,
               validationErrors: createValidation(
-                fieldSet[action.payload.fieldName].validation
+                fieldSet[action.payload.fieldName].validators as any
               )(action.payload.value),
             },
           },
@@ -57,13 +61,13 @@ export const createReducer =
 
 export const validatedAllFields = (
   fieldSet: FieldSet,
-  state: RuniformReducerState
-): RuniformReducerState | null => {
+  state: RuniformState
+): RuniformState | null => {
   const fieldsWithErrorsEntries = Object.entries(state).reduce(
     (err: any[], [fieldName, data]) => {
-      const validationErrors = createValidation(fieldSet[fieldName].validation)(
-        data.value
-      );
+      const validationErrors = createValidation(
+        fieldSet[fieldName].validators as any
+      )(data.value);
 
       return validationErrors.length
         ? err.concat([[fieldName, { ...data, validationErrors }]])

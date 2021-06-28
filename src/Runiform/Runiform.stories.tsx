@@ -26,25 +26,25 @@ stories.add('default', () => (
           label: 'First Name:',
           placeholder: 'Please enter your first name...',
           value: '',
-          validation: [required, minLength(4)],
+          validators: [required, minLength(4)],
         },
         lastName: {
           type: InputType.text,
           label: 'Last Name:',
           value: '',
-          validation: [required, maxLength(20), startsWith('wooga.name')],
+          validators: [required, maxLength(20), startsWith('wooga.name')],
         },
         nickName: {
           type: InputType.text,
           label: 'Nickname:',
           value: '',
-          validation: [minLengthForNotRequired(4), maxLength(20)],
+          validators: [minLengthForNotRequired(4), maxLength(20)],
         },
         agreement: {
           type: InputType.checkbox,
           label: 'I agree with providing my information',
           value: false,
-          validation: [required],
+          validators: [required],
         },
       }}
       onSubmit={(val) => console.log(val)}

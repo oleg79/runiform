@@ -1,5 +1,5 @@
 import React from 'react';
-import { ActionType, FieldSet, InputType, RuniformReducerState } from './types';
+import { ActionType, FieldSet, InputType, RuniformState } from './types';
 import {
   createInitialState,
   createReducer,
@@ -13,7 +13,7 @@ import { FieldProps } from './components/types';
 
 type RuniformProps = {
   fieldSet: FieldSet;
-  onSubmit: (input: RuniformReducerState) => void;
+  onSubmit: (input: RuniformState) => void;
   styles?: typeof defaultStyles;
 };
 

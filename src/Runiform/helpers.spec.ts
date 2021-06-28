@@ -5,7 +5,7 @@ import {
   isFormInvalid,
   validatedAllFields,
 } from './helpers';
-import { ActionType, FieldSet } from './types';
+import { ActionType, FieldSet, InputType } from './types';
 import { maxLength, minLength, required, startsWith } from './validators';
 
 describe('createValidation', () => {
@@ -17,7 +17,7 @@ describe('createValidation', () => {
   });
 
   it('should create a proper validation with validators', () => {
-    const validation = createValidation([
+    const validation = createValidation<string>([
       (v, p) => (v.length < 4 ? p : p.concat('error 1')),
       (v, p) => (v === 'some value' ? p : p.concat('error 2')),
       (v, p) => (v.startsWith('abc') ? p : p.concat('error 3')),
@@ -55,14 +55,14 @@ describe('createInitialState', () => {
     expect(
       createInitialState({
         field1: {
-          type: 'text',
+          type: InputType.text,
           value: 'initial value',
-          validation: [],
+          validators: [],
         },
         field2: {
-          type: 'text',
+          type: InputType.text,
           value: '',
-          validation: [],
+          validators: [],
         },
       })
     ).toEqual({
@@ -75,14 +75,14 @@ describe('createInitialState', () => {
 describe('createReducer', () => {
   const fieldSet: FieldSet = {
     field1: {
-      type: 'text',
+      type: InputType.text,
       value: '',
-      validation: [required, minLength(4)],
+      validators: [required, minLength(4)],
     },
     field2: {
-      type: 'text',
+      type: InputType.text,
       value: '',
-      validation: [required, maxLength(10), startsWith('wooga.name')],
+      validators: [required, maxLength(10), startsWith('wooga.name')],
     },
   };
 
@@ -139,14 +139,14 @@ describe('createReducer', () => {
 describe('validatedAllFields', () => {
   const fieldSet: FieldSet = {
     field1: {
-      type: 'text',
+      type: InputType.text,
       value: '',
-      validation: [required, minLength(4)],
+      validators: [required, minLength(4)],
     },
     field2: {
-      type: 'text',
+      type: InputType.text,
       value: '',
-      validation: [required, maxLength(20), startsWith('wooga.name')],
+      validators: [required, maxLength(20), startsWith('wooga.name')],
     },
   };
 
@@ -167,7 +167,7 @@ describe('validatedAllFields', () => {
         field1: {
           value: '',
           validationErrors: [
-            'should not be empty',
+            'This field is required',
             'should have length more than 4',
           ],
         },

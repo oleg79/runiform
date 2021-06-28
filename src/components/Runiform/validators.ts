@@ -10,6 +10,13 @@ export const minLength =
       ? prevResult
       : prevResult.concat(`should have length more than ${len}`);
 
+export const minLengthForNotRequired =
+  (len: number): Validator =>
+  (value, prevResult) =>
+    !value.length || value.length >= len
+      ? prevResult
+      : prevResult.concat(`should have length more than ${len}`);
+
 export const maxLength =
   (len: number): Validator =>
   (value, prevResult) =>

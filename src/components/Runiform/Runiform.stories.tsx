@@ -2,7 +2,13 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 
 import { Runiform } from '.';
-import { maxLength, minLength, required, startsWith } from './validators';
+import {
+  maxLength,
+  minLength,
+  minLengthForNotRequired,
+  required,
+  startsWith,
+} from './validators';
 
 const stories = storiesOf('Runiform', module);
 
@@ -31,7 +37,7 @@ stories.add('default', () => (
           type: 'text',
           label: 'Nickname',
           value: '',
-          validation: [maxLength(20)],
+          validation: [minLengthForNotRequired(4), maxLength(20)],
         },
       }}
       onSubmit={(val) => console.log(val)}

@@ -6,6 +6,7 @@ import {
   isFormInvalid,
   validatedAllFields,
 } from './helpers';
+import { TextField } from './components/TextField';
 import defaultStyles from './Runiform.module.scss';
 
 type RuniformProps = {
@@ -46,32 +47,15 @@ export const Runiform: React.FC<RuniformProps> = ({
     >
       {Object.keys(fieldSet).map((fieldName) => (
         <React.Fragment key={fieldName}>
-          <label htmlFor={`runiform_${fieldName}`}>
-            {fieldSet[fieldName].label || fieldName}:
-            <input
-              id={`runiform_${fieldName}`}
-              className={
-                state[fieldName].validationErrors.length
-                  ? styles['input-with-error']
-                  : styles.input
-              }
-              data-testid={`${fieldName}-element`}
-              aria-label={fieldName}
-              name={fieldName}
-              type={fieldSet[fieldName].type}
-              value={state[fieldName].value}
-              placeholder={fieldSet[fieldName].placeholder}
-              onChange={(e) =>
-                dispatch({
-                  type: ActionType.setValue,
-                  payload: {
-                    fieldName,
-                    value: e.target.value,
-                  },
-                })
-              }
-            />
-          </label>
+          <TextField
+            fieldName={fieldName}
+            value={state[fieldName].value}
+            placeholder={fieldSet[fieldName].placeholder}
+            styles={styles}
+            label={fieldSet[fieldName].label || fieldName}
+            dispatch={dispatch}
+            hasErrors={!!state[fieldName].validationErrors.length}
+          />
           <ul>
             {state[fieldName].validationErrors.map((err) => (
               <li key={`${fieldName}${err}`}>{err}</li>

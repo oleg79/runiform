@@ -26,25 +26,35 @@ stories.add('default', () => (
           label: 'First Name:',
           placeholder: 'Please enter your first name...',
           value: '',
-          validators: [required, minLength(4)],
+          validators: [
+            required('This field is required'),
+            minLength('Must contain at least 4 characters', 4),
+          ],
         },
         lastName: {
           type: InputType.text,
           label: 'Last Name:',
           value: '',
-          validators: [required, maxLength(20), startsWith('wooga.name')],
+          validators: [
+            required('This field is required'),
+            maxLength('Must be 20 characters at most', 20),
+            startsWith('Has to start with "wooga.name"', 'wooga.name'),
+          ],
         },
         nickName: {
           type: InputType.text,
           label: 'Nickname:',
           value: '',
-          validators: [minLengthForNotRequired(4), maxLength(20)],
+          validators: [
+            minLengthForNotRequired('Must contain at least 4 characters', 4),
+            maxLength('Must be 20 characters at most', 20),
+          ],
         },
         agreement: {
           type: InputType.checkbox,
           label: 'I agree with providing my information',
           value: false,
-          validators: [required],
+          validators: [required('Please confirm')],
         },
       }}
       onSubmit={(val) => console.log(val)}

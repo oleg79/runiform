@@ -11,12 +11,16 @@ describe('Runiform', () => {
     firstName: {
       type: InputType.text,
       value: '',
-      validators: [required, minLength(4)],
+      validators: [required('required'), minLength('minLength 4', 4)],
     },
     lastName: {
       type: InputType.text,
       value: '',
-      validators: [required, maxLength(20), startsWith('wooga.name')],
+      validators: [
+        required('required'),
+        maxLength('maxLength 20', 20),
+        startsWith('startsWith "wooga.name"', 'wooga.name'),
+      ],
     },
   };
 

@@ -1,32 +1,28 @@
 import { Validator } from './types';
 
-export const required: Validator<string | boolean> = (value, prevResult) =>
-  value ? prevResult : prevResult.concat('This field is required');
+export const required =
+  (message: string): Validator<string | boolean> =>
+  (value, prevResult) =>
+    value ? prevResult : prevResult.concat(message);
 
 export const minLength =
-  (len: number): Validator<string> =>
+  (message: string, len: number): Validator<string> =>
   (value, prevResult) =>
-    value.length >= len
-      ? prevResult
-      : prevResult.concat(`should have length more than ${len}`);
+    value.length >= len ? prevResult : prevResult.concat(message);
 
 export const minLengthForNotRequired =
-  (len: number): Validator<string> =>
+  (message: string, len: number): Validator<string> =>
   (value, prevResult) =>
     !value.length || value.length >= len
       ? prevResult
-      : prevResult.concat(`should have length more than ${len}`);
+      : prevResult.concat(message);
 
 export const maxLength =
-  (len: number): Validator<string> =>
+  (message: string, len: number): Validator<string> =>
   (value, prevResult) =>
-    value.length <= len
-      ? prevResult
-      : prevResult.concat(`should have length less than ${len}`);
+    value.length <= len ? prevResult : prevResult.concat(message);
 
 export const startsWith =
-  (start: string): Validator<string> =>
+  (message: string, start: string): Validator<string> =>
   (value, prevResult) =>
-    value.startsWith(start)
-      ? prevResult
-      : prevResult.concat(`should start with "${start}"`);
+    value.startsWith(start) ? prevResult : prevResult.concat(message);

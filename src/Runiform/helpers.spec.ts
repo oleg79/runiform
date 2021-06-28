@@ -77,12 +77,16 @@ describe('createReducer', () => {
     field1: {
       type: InputType.text,
       value: '',
-      validators: [required, minLength(4)],
+      validators: [required('required'), minLength('minLength 4', 4)],
     },
     field2: {
       type: InputType.text,
       value: '',
-      validators: [required, maxLength(10), startsWith('wooga.name')],
+      validators: [
+        required('required'),
+        maxLength('maxLength 10', 10),
+        startsWith('startsWith "wooga.name"', 'wooga.name'),
+      ],
     },
   };
 
@@ -97,7 +101,7 @@ describe('createReducer', () => {
     expect(state).toEqual({
       field1: {
         value: 'val',
-        validationErrors: ['should have length more than 4'],
+        validationErrors: ['minLength 4'],
       },
       field2: { value: '', validationErrors: [] },
     });
@@ -127,10 +131,7 @@ describe('createReducer', () => {
       },
       field2: {
         value: 'val val val',
-        validationErrors: [
-          'should have length less than 10',
-          'should start with "wooga.name"',
-        ],
+        validationErrors: ['maxLength 10', 'startsWith "wooga.name"'],
       },
     });
   });
@@ -141,12 +142,16 @@ describe('validatedAllFields', () => {
     field1: {
       type: InputType.text,
       value: '',
-      validators: [required, minLength(4)],
+      validators: [required('required'), minLength('minLength 4', 4)],
     },
     field2: {
       type: InputType.text,
       value: '',
-      validators: [required, maxLength(20), startsWith('wooga.name')],
+      validators: [
+        required('required'),
+        maxLength('maxLength 20', 20),
+        startsWith('startsWith "wooga.name"', 'wooga.name'),
+      ],
     },
   };
 
@@ -166,17 +171,11 @@ describe('validatedAllFields', () => {
       {
         field1: {
           value: '',
-          validationErrors: [
-            'This field is required',
-            'should have length more than 4',
-          ],
+          validationErrors: ['required', 'minLength 4'],
         },
         field2: {
           value: 'some some some some some',
-          validationErrors: [
-            'should have length less than 20',
-            'should start with "wooga.name"',
-          ],
+          validationErrors: ['maxLength 20', 'startsWith "wooga.name"'],
         },
       },
     ],

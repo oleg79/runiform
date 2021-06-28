@@ -7,6 +7,7 @@ import {
   validatedAllFields,
 } from './helpers';
 import { TextField } from './components/TextField';
+import { ErrorList } from './components/ErrorList';
 import defaultStyles from './Runiform.module.scss';
 
 type RuniformProps = {
@@ -56,11 +57,10 @@ export const Runiform: React.FC<RuniformProps> = ({
             dispatch={dispatch}
             hasErrors={!!state[fieldName].validationErrors.length}
           />
-          <ul>
-            {state[fieldName].validationErrors.map((err) => (
-              <li key={`${fieldName}${err}`}>{err}</li>
-            ))}
-          </ul>
+          <ErrorList
+            validationErrors={state[fieldName].validationErrors}
+            styles={styles}
+          />
         </React.Fragment>
       ))}
       <button type="submit" disabled={!isFormSubmittable}>

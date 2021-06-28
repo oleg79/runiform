@@ -1,3 +1,7 @@
+$error-color: rgb(224, 64, 28);
+$active-submit-btn-color: rgb(23, 134, 229);
+$disabled-submit-btn-color: #999999;
+
 .form {
   display: flex;
   flex-direction: column;
@@ -12,6 +16,7 @@
 
 .input-field {
   width: 100%;
+  margin-bottom: 10px;
 }
 
 .input {
@@ -24,12 +29,38 @@
 
 .input-with-error {
   @extend .input;
-  color: red;
-  outline-color: red;
+  color: $error-color;
+  outline-color: $error-color;
+}
+
+.error-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.error {
+  font-size: 14px;
+  color: $error-color;
 }
 
 .submit-button {
   width: 100%;
   font-size: 18px;
   padding: 5px;
+  background-color: transparent;
+  border: 1px solid $active-submit-btn-color;
+  border-radius: 4px;
+  color: $active-submit-btn-color;
+
+  &:hover:enabled {
+    background-color: $active-submit-btn-color;
+    color: white;
+    cursor: pointer;
+  }
+
+  &:disabled {
+    border-color: $disabled-submit-btn-color;
+    color: $disabled-submit-btn-color;
+  }
 }

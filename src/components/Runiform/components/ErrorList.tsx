@@ -5,10 +5,12 @@ type ErrorListProps = {
   styles: any;
 };
 
-const _ErrorList: React.FC<ErrorListProps> = ({ validationErrors }) => (
-  <ul>
+const _ErrorList: React.FC<ErrorListProps> = ({ validationErrors, styles }) => (
+  <ul className={styles['error-list']}>
     {validationErrors.map((err) => (
-      <li key={err}>{err}</li>
+      <li key={err} className={styles.error}>
+        {err}
+      </li>
     ))}
   </ul>
 );

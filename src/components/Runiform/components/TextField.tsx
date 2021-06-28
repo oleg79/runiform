@@ -25,7 +25,6 @@ const _TextField: React.FC<TextFieldProps> = ({
     <label className={styles.label} htmlFor={`runiform_${fieldName}`}>
       {label}:
     </label>
-    <br />
     <input
       id={`runiform_${fieldName}`}
       className={

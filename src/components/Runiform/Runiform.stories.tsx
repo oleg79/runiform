@@ -13,7 +13,7 @@ import {
 const stories = storiesOf('Runiform', module);
 
 const Container: React.FC = ({ children }) => (
-  <div style={{ width: '400px' }}>{children}</div>
+  <div style={{ width: '300px' }}>{children}</div>
 );
 
 stories.add('default', () => (

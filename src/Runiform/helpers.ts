@@ -54,6 +54,8 @@ export const createReducer =
         };
       case ActionType.setErrors:
         return { ...state, ...action.payload };
+      case ActionType.resetForm:
+        return createInitialState(fieldSet);
       default:
         return state;
     }

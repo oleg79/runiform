@@ -44,6 +44,7 @@ export type RuniformState = {
 export enum ActionType {
   setValue = 'setValue',
   setErrors = 'setErrors',
+  resetForm = 'resetForm',
 }
 
 export type SetValueAction<T> = {
@@ -59,4 +60,11 @@ export type SetErrorAction = {
   payload: RuniformState;
 };
 
-export type RuniformAction<T> = SetValueAction<T> | SetErrorAction;
+export type ResetFormAction = {
+  type: ActionType.resetForm;
+};
+
+export type RuniformAction<T> =
+  | SetValueAction<T>
+  | SetErrorAction
+  | ResetFormAction;

@@ -43,6 +43,7 @@ export const Runiform: React.FC<RuniformProps> = ({
 
     if (!preSubmitErrors && isFormSubmittable) {
       onSubmit(state);
+      dispatch({ type: ActionType.resetForm });
     } else if (preSubmitErrors) {
       dispatch({ type: ActionType.setErrors, payload: preSubmitErrors });
     }

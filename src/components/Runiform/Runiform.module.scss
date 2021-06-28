@@ -1,11 +1,35 @@
 .form {
   display: flex;
   flex-direction: column;
+  padding: 10px;
+  width: 100%;
+  align-items: center;
+}
+
+.label {
+  font-size: 18px;
+}
+
+.input-field {
+  width: 100%;
 }
 
 .input {
-  &-with-error {
-    color: red;
-    border-color: red;
-  }
+  width: calc(100% - 25px);
+  height: 30px;
+  font-size: 18px;
+  margin-top: 5px;
+  padding: 0 10px;
+}
+
+.input-with-error {
+  @extend .input;
+  color: red;
+  outline-color: red;
+}
+
+.submit-button {
+  width: 100%;
+  font-size: 18px;
+  padding: 5px;
 }

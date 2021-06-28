@@ -21,31 +21,32 @@ const _TextField: React.FC<TextFieldProps> = ({
   placeholder,
   dispatch,
 }) => (
-  <div>
-    <label htmlFor={`runiform_${fieldName}`}>
-      {label}:<br />
-      <input
-        id={`runiform_${fieldName}`}
-        className={
-          validationErrors.length ? styles['input-with-error'] : styles.input
-        }
-        data-testid={`${fieldName}-element`}
-        aria-label={fieldName}
-        name={fieldName}
-        type="text"
-        value={value}
-        placeholder={placeholder}
-        onChange={(e) =>
-          dispatch({
-            type: ActionType.setValue,
-            payload: {
-              fieldName,
-              value: e.currentTarget.value,
-            },
-          })
-        }
-      />
+  <div className={styles['input-field']}>
+    <label className={styles.label} htmlFor={`runiform_${fieldName}`}>
+      {label}:
     </label>
+    <br />
+    <input
+      id={`runiform_${fieldName}`}
+      className={
+        validationErrors.length ? styles['input-with-error'] : styles.input
+      }
+      data-testid={`${fieldName}-element`}
+      aria-label={fieldName}
+      name={fieldName}
+      type="text"
+      value={value}
+      placeholder={placeholder}
+      onChange={(e) =>
+        dispatch({
+          type: ActionType.setValue,
+          payload: {
+            fieldName,
+            value: e.currentTarget.value,
+          },
+        })
+      }
+    />
     <ErrorList validationErrors={validationErrors} styles={styles} />
   </div>
 );

@@ -57,7 +57,11 @@ export const Runiform: React.FC<RuniformProps> = ({
           validationErrors={state[fieldName].validationErrors}
         />
       ))}
-      <button type="submit" disabled={!isFormSubmittable}>
+      <button
+        className={styles['submit-button']}
+        type="submit"
+        disabled={!isFormSubmittable}
+      >
         Submit
       </button>
     </form>

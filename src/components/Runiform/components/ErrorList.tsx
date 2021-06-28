@@ -5,10 +5,15 @@ type ErrorListProps = {
   styles: any;
 };
 
-export const ErrorList: React.FC<ErrorListProps> = ({ validationErrors }) => (
+const _ErrorList: React.FC<ErrorListProps> = ({ validationErrors }) => (
   <ul>
     {validationErrors.map((err) => (
       <li key={err}>{err}</li>
     ))}
   </ul>
+);
+
+export const ErrorList = React.memo(
+  _ErrorList,
+  (prev, next) => prev.validationErrors.length === next.validationErrors.length
 );

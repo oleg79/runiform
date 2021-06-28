@@ -19,6 +19,11 @@ stories.add('default', () => (
         value: '',
         validation: [required, maxLength(20), startsWith('wooga.name')],
       },
+      nickName: {
+        type: 'text',
+        value: '',
+        validation: [maxLength(20)],
+      },
     }}
     onSubmit={(val) => console.log(val)}
   />

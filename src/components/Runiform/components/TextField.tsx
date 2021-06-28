@@ -1,45 +1,58 @@
 import React from 'react';
 import { ActionType, RuniformReducerAction } from '../types';
+import { ErrorList } from './ErrorList';
 
 type TextFieldProps = {
   fieldName: string;
   label: string;
-  hasErrors: boolean;
+  validationErrors: string[];
   styles: any;
   value: string;
   placeholder?: string;
   dispatch: React.Dispatch<RuniformReducerAction>;
 };
 
-export const TextField: React.FC<TextFieldProps> = ({
+const _TextField: React.FC<TextFieldProps> = ({
   fieldName,
   label,
-  hasErrors,
+  validationErrors,
   styles,
   value,
   placeholder,
   dispatch,
 }) => (
-  <label htmlFor={`runiform_${fieldName}`}>
-    {label}:
-    <input
-      id={`runiform_${fieldName}`}
-      className={hasErrors ? styles['input-with-error'] : styles.input}
-      data-testid={`${fieldName}-element`}
-      aria-label={fieldName}
-      name={fieldName}
-      type="text"
-      value={value}
-      placeholder={placeholder}
-      onChange={(e) =>
-        dispatch({
-          type: ActionType.setValue,
-          payload: {
-            fieldName,
-            value: e.target.value,
-          },
-        })
-      }
-    />
-  </label>
+  <div>
+    <label htmlFor={`runiform_${fieldName}`}>
+      {label}:<br />
+      <input
+        id={`runiform_${fieldName}`}
+        className={
+          validationErrors.length ? styles['input-with-error'] : styles.input
+        }
+        data-testid={`${fieldName}-element`}
+        aria-label={fieldName}
+        name={fieldName}
+        type="text"
+        value={value}
+        placeholder={placeholder}
+        onChange={(e) =>
+          dispatch({
+            type: ActionType.setValue,
+            payload: {
+              fieldName,
+              value: e.currentTarget.value,
+            },
+          })
+        }
+      />
+    </label>
+    <ErrorList validationErrors={validationErrors} styles={styles} />
+  </div>
+);
+
+export const TextField = React.memo(
+  _TextField,
+  (prev, next) =>
+    prev.value === next.value &&
+    prev.validationErrors.length === next.validationErrors.length
 );

@@ -3,46 +3,42 @@ import { ActionType } from '../types';
 import { ErrorList } from './ErrorList';
 import { FieldProps } from './types';
 
-const _TextField: React.FC<FieldProps<string>> = ({
+const _CheckboxField: React.FC<FieldProps<boolean>> = ({
   fieldName,
   label,
   validationErrors,
   styles,
   value,
-  placeholder,
   dispatch,
 }) => (
   <div className={styles['input-field']}>
-    <label className={styles.label} htmlFor={`runiform_${fieldName}`}>
-      {label}
-    </label>
     <input
       id={`runiform_${fieldName}`}
-      className={
-        validationErrors.length ? styles['input-with-error'] : styles.input
-      }
+      className={styles['input-checkbox']}
       data-testid={`${fieldName}-element`}
       aria-label={fieldName}
       name={fieldName}
-      type="text"
-      value={value}
-      placeholder={placeholder}
+      type="checkbox"
+      checked={value}
       onChange={(e) =>
         dispatch({
           type: ActionType.setValue,
           payload: {
             fieldName,
-            value: e.currentTarget.value,
+            value: e.target.checked,
           },
         })
       }
     />
+    <label className={styles.label} htmlFor={`runiform_${fieldName}`}>
+      {label}
+    </label>
     <ErrorList validationErrors={validationErrors} styles={styles} />
   </div>
 );
 
-export const TextField = React.memo(
-  _TextField,
+export const CheckboxField = React.memo(
+  _CheckboxField,
   (prev, next) =>
     prev.value === next.value &&
     prev.validationErrors.length === next.validationErrors.length

@@ -1,7 +1,7 @@
 import { Validator } from './types';
 
 export const required: Validator = (value, prevResult) =>
-  value ? prevResult : prevResult.concat('should not be empty');
+  value ? prevResult : prevResult.concat('This field is required');
 
 export const minLength =
   (len: number): Validator =>

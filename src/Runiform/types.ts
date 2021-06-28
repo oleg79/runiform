@@ -5,13 +5,22 @@ export type Validator = (
   prevResult: ValidatorResult
 ) => ValidatorResult;
 
-export type FieldOptions = Readonly<{
-  type: 'text';
-  value: string;
+export enum InputType {
+  text = 'text',
+  checkbox = 'checkbox',
+}
+
+type CommonOptions<T> = T & {
+  type: InputType;
   label?: string;
   placeholder?: string;
   validation: Validator[];
-}>;
+};
+
+export type FieldOptions = CommonOptions<
+  | { type: InputType.text; value: string }
+  | { type: InputType.checkbox; value: boolean }
+>;
 
 export type FieldSet = { [key: string]: FieldOptions };
 
@@ -27,11 +36,11 @@ export enum ActionType {
   setErrors = 'setErrors',
 }
 
-export type SetValueAction = {
+export type SetValueAction<T> = {
   type: ActionType.setValue;
   payload: {
     fieldName: keyof FieldSet;
-    value: string;
+    value: T;
   };
 };
 
@@ -40,4 +49,4 @@ export type SetErrorAction = {
   payload: RuniformReducerState;
 };
 
-export type RuniformReducerAction = SetValueAction | SetErrorAction;
+export type RuniformReducerAction<T> = SetValueAction<T> | SetErrorAction;

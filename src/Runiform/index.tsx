@@ -1,5 +1,5 @@
 import React from 'react';
-import { ActionType, FieldSet, RuniformReducerState } from './types';
+import { ActionType, FieldSet, InputType, RuniformReducerState } from './types';
 import {
   createInitialState,
   createReducer,
@@ -7,12 +7,19 @@ import {
   validatedAllFields,
 } from './helpers';
 import { TextField } from './components/TextField';
+import { CheckboxField } from './components/CheckboxField';
 import defaultStyles from './Runiform.module.scss';
+import { FieldProps } from './components/types';
 
 type RuniformProps = {
   fieldSet: FieldSet;
   onSubmit: (input: RuniformReducerState) => void;
   styles?: typeof defaultStyles;
+};
+
+const typeToComponentMap: Record<InputType, React.FC<FieldProps<any>>> = {
+  [InputType.text]: TextField,
+  [InputType.checkbox]: CheckboxField,
 };
 
 export const Runiform: React.FC<RuniformProps> = ({
@@ -45,18 +52,21 @@ export const Runiform: React.FC<RuniformProps> = ({
       className={styles.form}
       onSubmit={handleSubmit}
     >
-      {Object.keys(fieldSet).map((fieldName) => (
-        <TextField
-          key={fieldName}
-          fieldName={fieldName}
-          value={state[fieldName].value}
-          placeholder={fieldSet[fieldName].placeholder}
-          styles={styles}
-          label={fieldSet[fieldName].label || fieldName}
-          dispatch={dispatch}
-          validationErrors={state[fieldName].validationErrors}
-        />
-      ))}
+      {Object.keys(fieldSet).map((fieldName) => {
+        const InputComponent = typeToComponentMap[fieldSet[fieldName].type];
+        return (
+          <InputComponent
+            key={fieldName}
+            fieldName={fieldName}
+            value={state[fieldName].value}
+            placeholder={fieldSet[fieldName].placeholder}
+            styles={styles}
+            label={fieldSet[fieldName].label || fieldName}
+            dispatch={dispatch}
+            validationErrors={state[fieldName].validationErrors}
+          />
+        );
+      })}
       <button
         className={styles['submit-button']}
         type="submit"

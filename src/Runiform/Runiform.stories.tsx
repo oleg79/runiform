@@ -9,6 +9,7 @@ import {
   required,
   startsWith,
 } from './validators';
+import { InputType } from './types';
 
 const stories = storiesOf('Runiform', module);
 
@@ -21,23 +22,29 @@ stories.add('default', () => (
     <Runiform
       fieldSet={{
         firstName: {
-          type: 'text',
-          label: 'First Name',
+          type: InputType.text,
+          label: 'First Name:',
           placeholder: 'Please enter your first name...',
           value: '',
           validation: [required, minLength(4)],
         },
         lastName: {
-          type: 'text',
-          label: 'Last Name',
+          type: InputType.text,
+          label: 'Last Name:',
           value: '',
           validation: [required, maxLength(20), startsWith('wooga.name')],
         },
         nickName: {
-          type: 'text',
-          label: 'Nickname',
+          type: InputType.text,
+          label: 'Nickname:',
           value: '',
           validation: [minLengthForNotRequired(4), maxLength(20)],
+        },
+        agreement: {
+          type: InputType.checkbox,
+          label: 'I agree with providing my information',
+          value: false,
+          validation: [required],
         },
       }}
       onSubmit={(val) => console.log(val)}

@@ -72,3 +72,89 @@ stories.add('default', () => (
     />
   </Container>
 ));
+
+stories.add('Shows all error messages', () => (
+  <Container>
+    <Runiform
+      fieldSet={{
+        firstName: {
+          type: InputType.text,
+          label: 'First Name:',
+          placeholder: 'Please enter your first name...',
+          value: '',
+          validators: [
+            All.empty,
+            required('This field is required'),
+            startsWith('Must start with "abc"', 'abc'),
+            minLength('Must contain at least 4 characters', 4),
+          ],
+        },
+      }}
+      submitText="Submit"
+      onSubmit={(val) => console.log(val)}
+    />
+  </Container>
+));
+
+stories.add('Shows first error message', () => (
+  <Container>
+    <Runiform
+      fieldSet={{
+        firstName: {
+          type: InputType.text,
+          label: 'First Name:',
+          placeholder: 'Please enter your first name...',
+          value: '',
+          validators: [
+            First.empty,
+            required('This field is required'),
+            startsWith('Must start with "abc"', 'abc'),
+            minLength('Must contain at least 4 characters', 4),
+          ],
+        },
+      }}
+      submitText="Submit"
+      onSubmit={(val) => console.log(val)}
+    />
+  </Container>
+));
+
+stories.add('Shows last error message', () => (
+  <Container>
+    <Runiform
+      fieldSet={{
+        firstName: {
+          type: InputType.text,
+          label: 'First Name:',
+          placeholder: 'Please enter your first name...',
+          value: '',
+          validators: [
+            Last.empty,
+            required('This field is required'),
+            startsWith('Must start with "abc"', 'abc'),
+            minLength('Must contain at least 4 characters', 4),
+          ],
+        },
+      }}
+      submitText="Submit"
+      onSubmit={(val) => console.log(val)}
+    />
+  </Container>
+));
+
+stories.add('No validation', () => (
+  <Container>
+    <Runiform
+      fieldSet={{
+        firstName: {
+          type: InputType.text,
+          label: 'First Name:',
+          placeholder: 'Please enter your first name...',
+          value: '',
+        },
+      }}
+      submitText="Submit"
+      onSubmit={(val) => console.log(val)}
+    />
+  </Container>
+));

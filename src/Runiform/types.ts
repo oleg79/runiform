@@ -25,7 +25,7 @@ export type Validators<T> = Validator<T>[];
 type DistinctFields<T extends InputType> = {
   type: T;
   value: ValuesTypeMap[T];
-  validators: Validators<ValuesTypeMap[T]>;
+  validators?: Validators<ValuesTypeMap[T]>;
 };
 
 type MakeFieldConfiguration<T extends InputType> = DistinctFields<T> & {

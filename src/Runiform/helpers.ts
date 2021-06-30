@@ -47,7 +47,7 @@ export const createReducer =
               ...state[action.payload.fieldName],
               value: action.payload.value,
               validationErrors: createValidation(
-                fieldSet[action.payload.fieldName].validators as any
+                (fieldSet[action.payload.fieldName].validators || []) as any
               )(action.payload.value),
             },
           },
@@ -68,7 +68,7 @@ export const validatedAllFields = (
   const fieldsWithErrorsEntries = Object.entries(state).reduce(
     (err: any[], [fieldName, data]) => {
       const validationErrors = createValidation(
-        fieldSet[fieldName].validators as any
+        (fieldSet[fieldName].validators || []) as any
       )(data.value);
 
       return validationErrors.length

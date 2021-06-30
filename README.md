@@ -37,7 +37,7 @@ name | required | type | description
 --- | --- | --- | ---
 type | ✅ | `InputType` | Specifies input type. Has to be one of `enum InputType` values e.g. `InputType.text`
 value | ✅ | `string` or `boolean` | Specifies initial value of the input. Has to correlate with `type` value e.g. for `InputType.text` it has to be `string`, for `InputType.checkbox` - `boolean`
-validators | ✅ | `Validators` | An array of validation function. If empty no validation will be triggered on the field.
+validators | ❌ | `Validators` | An array of validation function.
 label | ❌ | `string` | A value for the field label. If not provided field set key will be used instead.
 placeholder | ❌ | `string` | Input placeholder.
 

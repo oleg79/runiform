@@ -50,6 +50,11 @@ stories.add('default', () => (
             maxLength('Must be 20 characters at most', 20),
           ],
         },
+        noValidation: {
+          type: InputType.text,
+          label: 'No validation:',
+          value: '',
+        },
         agreement: {
           type: InputType.checkbox,
           label: 'I agree with providing my information',

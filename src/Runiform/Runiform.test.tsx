@@ -22,6 +22,10 @@ describe('Runiform', () => {
         startsWith('startsWith "wooga.name"', 'wooga.name'),
       ],
     },
+    nickname: {
+      type: InputType.text,
+      value: '',
+    },
   };
 
   afterEach(handleSubmit.mockReset);
@@ -34,7 +38,7 @@ describe('Runiform', () => {
         submitText="submit"
       />
     );
-    expect(getAllByRole('textbox').length).toBe(2);
+    expect(getAllByRole('textbox').length).toBe(3);
   });
 
   it('should not trigger onSubmit on invalid form', async () => {
@@ -78,6 +82,7 @@ describe('Runiform', () => {
     expect(handleSubmit).toBeCalledWith({
       firstName: { value: 'value', validationErrors: [] },
       lastName: { value: 'wooga.name.value', validationErrors: [] },
+      nickname: { value: '', validationErrors: [] },
     });
   });
 });

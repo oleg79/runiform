@@ -17,5 +17,7 @@ const _ErrorList: React.FC<ErrorListProps> = ({ validationErrors, styles }) => (
 
 export const ErrorList = React.memo(
   _ErrorList,
-  (prev, next) => prev.validationErrors.length === next.validationErrors.length
+  (prev, next) =>
+    prev.validationErrors.length === next.validationErrors.length &&
+    prev.validationErrors.every((err) => next.validationErrors.includes(err))
 );

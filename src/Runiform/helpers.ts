@@ -4,18 +4,20 @@ import {
   InputType,
   RuniformAction,
   RuniformState,
-  ValidatorResult,
   Validators,
   ValuesTypeMap,
 } from './types';
+import { Validator, ValidatorResult } from './validators';
+
+const getValidatorReducer =
+  <T>(value: T) =>
+  (result: ValidatorResult, validator: Validator<T>) =>
+    validator(value, result);
 
 export const createValidation =
-  <T>(validators: Validators<T>) =>
+  <T>([initial, ...validators]: Validators<T>) =>
   (value: T) =>
-    validators.reduce<ValidatorResult>(
-      (result, validator) => validator(value, result),
-      []
-    );
+    validators.reduce(getValidatorReducer(value), initial).value;
 
 export const isFormInvalid = (state: RuniformState): boolean =>
   Object.values(state).some(({ validationErrors }) => validationErrors.length);
@@ -40,15 +42,18 @@ export const createReducer =
   ): RuniformState => {
     switch (action.type) {
       case ActionType.setValue:
+        const { validators } = fieldSet[action.payload.fieldName];
+        const validationErrors = validators
+          ? createValidation(validators as any)(action.payload.value)
+          : [];
+
         return {
           ...state,
           ...{
             [action.payload.fieldName]: {
               ...state[action.payload.fieldName],
               value: action.payload.value,
-              validationErrors: createValidation(
-                (fieldSet[action.payload.fieldName].validators || []) as any
-              )(action.payload.value),
+              validationErrors,
             },
           },
         };
@@ -67,9 +72,10 @@ export const validatedAllFields = (
 ): RuniformState | null => {
   const fieldsWithErrorsEntries = Object.entries(state).reduce(
     (err: any[], [fieldName, data]) => {
-      const validationErrors = createValidation(
-        (fieldSet[fieldName].validators || []) as any
-      )(data.value);
+      const { validators } = fieldSet[fieldName];
+      const validationErrors = validators
+        ? createValidation(validators as any)(data.value)
+        : [];
 
       return validationErrors.length
         ? err.concat([[fieldName, { ...data, validationErrors }]])

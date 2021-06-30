@@ -6,27 +6,43 @@ import {
   validatedAllFields,
 } from './helpers';
 import { ActionType, FieldSet, InputType } from './types';
-import { maxLength, minLength, required, startsWith } from './validators';
+import {
+  maxLength,
+  minLength,
+  required,
+  startsWith,
+  All,
+  First,
+  Last,
+} from './validators';
 
 describe('createValidation', () => {
   it('should create a proper validation with no validators', () => {
-    const validation = createValidation([]);
+    const validation = createValidation([All.empty]);
 
     expect(typeof validation).toBe('function');
     expect(validation('some value')).toEqual([]);
   });
 
-  it('should create a proper validation with validators', () => {
-    const validation = createValidation<string>([
-      (v, p) => (v.length < 4 ? p : p.concat('error 1')),
-      (v, p) => (v === 'some value' ? p : p.concat('error 2')),
-      (v, p) => (v.startsWith('abc') ? p : p.concat('error 3')),
-      (v, p) => (v.includes('abc') ? p : p.concat('error 4')),
-    ]);
+  test.each([
+    ['All', All.empty, ['error 1', 'error 3', 'error 4']],
+    ['First', First.empty, ['error 1']],
+    ['Last', Last.empty, ['error 4']],
+  ])(
+    'should create a proper validation function for %s validation result strategy',
+    (_, strategy, result) => {
+      const validation = createValidation<string>([
+        strategy,
+        (v, p) => (v.length < 4 ? p : p.concat('error 1')),
+        (v, p) => (v === 'some value' ? p : p.concat('error 2')),
+        (v, p) => (v.startsWith('abc') ? p : p.concat('error 3')),
+        (v, p) => (v.includes('abc') ? p : p.concat('error 4')),
+      ]);
 
-    expect(typeof validation).toBe('function');
-    expect(validation('some value')).toEqual(['error 1', 'error 3', 'error 4']);
-  });
+      expect(typeof validation).toBe('function');
+      expect(validation('some value')).toEqual(result);
+    }
+  );
 });
 
 describe('isFormInvalid', () => {
@@ -57,12 +73,10 @@ describe('createInitialState', () => {
         field1: {
           type: InputType.text,
           value: 'initial value',
-          validators: [],
         },
         field2: {
           type: InputType.text,
           value: '',
-          validators: [],
         },
       })
     ).toEqual({
@@ -77,12 +91,17 @@ describe('createReducer', () => {
     field1: {
       type: InputType.text,
       value: '',
-      validators: [required('required'), minLength('minLength 4', 4)],
+      validators: [
+        All.empty,
+        required('required'),
+        minLength('minLength 4', 4),
+      ],
     },
     field2: {
       type: InputType.text,
       value: '',
       validators: [
+        All.empty,
         required('required'),
         maxLength('maxLength 10', 10),
         startsWith('startsWith "wooga.name"', 'wooga.name'),
@@ -142,12 +161,17 @@ describe('validatedAllFields', () => {
     field1: {
       type: InputType.text,
       value: '',
-      validators: [required('required'), minLength('minLength 4', 4)],
+      validators: [
+        All.empty,
+        required('required'),
+        minLength('minLength 4', 4),
+      ],
     },
     field2: {
       type: InputType.text,
       value: '',
       validators: [
+        All.empty,
         required('required'),
         maxLength('maxLength 20', 20),
         startsWith('startsWith "wooga.name"', 'wooga.name'),

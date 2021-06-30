@@ -1,14 +1,4 @@
-export type ValidatorResult = string[];
-
-export type Validator<T> = (
-  value: T,
-  prevResult: ValidatorResult
-) => ValidatorResult;
-
-export type ValidatorCreator<T> = (
-  message: string,
-  ...args: any[]
-) => Validator<T>;
+import { Validator, ValidatorResult } from './validators';
 
 export enum InputType {
   text = 'text',
@@ -20,7 +10,7 @@ export type ValuesTypeMap = {
   [InputType.checkbox]: boolean;
 };
 
-export type Validators<T> = Validator<T>[];
+export type Validators<T> = [ValidatorResult, ...Validator<T>[]];
 
 type DistinctFields<T extends InputType> = {
   type: T;
@@ -42,7 +32,7 @@ export type FieldSet = { [key: string]: FieldConfiguration };
 export type RuniformState = {
   [Property in keyof FieldSet]: {
     value: FieldSet[Property]['value'];
-    validationErrors: ValidatorResult;
+    validationErrors: string[];
   };
 };
 

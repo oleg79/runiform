@@ -8,6 +8,9 @@ import {
   minLengthForNotRequired,
   required,
   startsWith,
+  All,
+  First,
+  Last,
 } from './validators';
 import { InputType } from './types';
 
@@ -27,6 +30,7 @@ stories.add('default', () => (
           placeholder: 'Please enter your first name...',
           value: '',
           validators: [
+            First.empty,
             required('This field is required'),
             minLength('Must contain at least 4 characters', 4),
           ],
@@ -36,9 +40,9 @@ stories.add('default', () => (
           label: 'Last Name:',
           value: '',
           validators: [
-            required('This field is required'),
-            maxLength('Must be 20 characters at most', 20),
+            Last.empty,
             startsWith('Has to start with "wooga.name"', 'wooga.name'),
+            maxLength('Must be 20 characters at most', 20),
           ],
         },
         nickName: {
@@ -46,6 +50,7 @@ stories.add('default', () => (
           label: 'Nickname:',
           value: '',
           validators: [
+            All.empty,
             minLengthForNotRequired('Must contain at least 4 characters', 4),
             maxLength('Must be 20 characters at most', 20),
           ],
@@ -59,7 +64,7 @@ stories.add('default', () => (
           type: InputType.checkbox,
           label: 'I agree with providing my information',
           value: false,
-          validators: [required('Please confirm')],
+          validators: [All.empty, required('Please confirm')],
         },
       }}
       submitText="Submit"

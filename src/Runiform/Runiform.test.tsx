@@ -2,8 +2,8 @@ import React from 'react';
 import { fireEvent, render } from '@testing-library/react';
 
 import { Runiform } from '.';
-import { maxLength, minLength, required, startsWith } from './validators';
-import { FieldSet, InputType } from './types';
+import { maxLength, minLength, required, All, startsWith } from './validators';
+import { FieldSet, InputType} from './types';
 
 describe('Runiform', () => {
   const handleSubmit = jest.fn();
@@ -11,12 +11,17 @@ describe('Runiform', () => {
     firstName: {
       type: InputType.text,
       value: '',
-      validators: [required('required'), minLength('minLength 4', 4)],
+      validators: [
+        All.empty,
+        required('required'),
+        minLength('minLength 4', 4),
+      ],
     },
     lastName: {
       type: InputType.text,
       value: '',
       validators: [
+        All.empty,
         required('required'),
         maxLength('maxLength 20', 20),
         startsWith('startsWith "wooga.name"', 'wooga.name'),

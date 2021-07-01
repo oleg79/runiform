@@ -14,7 +14,6 @@ Example:
         name: {
           type: InputType.text,
           value: '',
-          validators: []
         }
       }}
       onSubmit={(state) => ...}

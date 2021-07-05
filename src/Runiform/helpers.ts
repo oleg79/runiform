@@ -43,8 +43,10 @@ export const createReducer =
     switch (action.type) {
       case ActionType.setValue:
         const { validators } = fieldSet[action.payload.fieldName];
+        const { value } = action.payload;
+
         const validationErrors = validators
-          ? createValidation(validators as any)(action.payload.value)
+          ? createValidation(validators as Validators<typeof value>)(value)
           : [];
 
         return {
@@ -70,11 +72,15 @@ export const validatedAllFields = (
   fieldSet: FieldSet,
   state: RuniformState
 ): RuniformState | null => {
-  const fieldsWithErrorsEntries = Object.entries(state).reduce(
-    (err: any[], [fieldName, data]) => {
+  const stateEntries = Object.entries(state);
+
+  const fieldsWithErrorsEntries = stateEntries.reduce(
+    (err: typeof stateEntries, [fieldName, data]) => {
       const { validators } = fieldSet[fieldName];
+      const { value } = data;
+
       const validationErrors = validators
-        ? createValidation(validators as any)(data.value)
+        ? createValidation(validators as Validators<typeof value>)(value)
         : [];
 
       return validationErrors.length

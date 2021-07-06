@@ -28,6 +28,8 @@ type ComplexField<T extends ComplexInputType> = {
   value: ValuesTypeMap[T] | undefined;
   options: { value: T; label: string }[];
   validators?: Validators<ValuesTypeMap[T]>;
+  label?: string;
+  placeholder?: string;
 };
 
 type MakeSimpleFieldConfiguration<T extends SimpleInputType> =

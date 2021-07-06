@@ -3,16 +3,16 @@ import { storiesOf } from '@storybook/react';
 
 import { Runiform } from '.';
 import {
+  All,
+  First,
+  Last,
   maxLength,
   minLength,
   minLengthForNotRequired,
   required,
   startsWith,
-  All,
-  First,
-  Last,
 } from './validators';
-import { SimpleInputType } from './types';
+import { ComplexInputType, SimpleInputType } from './types';
 
 const stories = storiesOf('Runiform', module);
 
@@ -65,6 +65,18 @@ stories.add('default', () => (
           label: 'I agree with providing my information',
           value: false,
           validators: [All.empty, required('Please confirm')],
+        },
+        petType: {
+          type: ComplexInputType.radio,
+          label: 'Pet type:',
+          value: undefined,
+          options: [
+            { label: '🐕', value: 'dogs' },
+            { label: '🐈', value: 'cats' },
+            { label: '🐍', value: 'reptiles' },
+            { label: '🕷️', value: 'insects' },
+            { label: '🐄', value: 'cows' },
+          ],
         },
       }}
       submitText="Submit"

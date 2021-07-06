@@ -8,5 +8,6 @@ export type FieldProps<T> = {
   styles: any;
   value: T;
   placeholder?: string;
+  options?: { value: T; label: string }[];
   dispatch: React.Dispatch<RuniformAction<T>>;
 };

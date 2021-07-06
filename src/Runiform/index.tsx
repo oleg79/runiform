@@ -1,5 +1,11 @@
 import React from 'react';
-import { ActionType, FieldSet, SimpleInputType, RuniformState } from './types';
+import {
+  ActionType,
+  FieldSet,
+  SimpleInputType,
+  RuniformState,
+  ComplexInputType,
+} from './types';
 import {
   createInitialState,
   createReducer,
@@ -8,6 +14,7 @@ import {
 } from './helpers';
 import { TextField } from './components/TextField';
 import { CheckboxField } from './components/CheckboxField';
+import { RadioField } from './components/RadioField';
 import defaultStyles from './Runiform.module.scss';
 import { FieldProps } from './components/types';
 
@@ -18,9 +25,13 @@ type RuniformProps = {
   styles?: typeof defaultStyles;
 };
 
-const typeToComponentMap: Record<SimpleInputType, React.FC<FieldProps<any>>> = {
+const typeToComponentMap: Record<
+  SimpleInputType | ComplexInputType,
+  React.FC<FieldProps<any>>
+> = {
   [SimpleInputType.text]: TextField,
   [SimpleInputType.checkbox]: CheckboxField,
+  [ComplexInputType.radio]: RadioField,
 };
 
 export const Runiform: React.FC<RuniformProps> = ({
@@ -64,9 +75,10 @@ export const Runiform: React.FC<RuniformProps> = ({
             value={state[fieldName].value}
             placeholder={fieldSet[fieldName].placeholder}
             styles={styles}
-            label={fieldSet[fieldName].label || fieldName}
+            label={fieldSet[fieldName]?.label || fieldName}
             dispatch={dispatch}
             validationErrors={state[fieldName].validationErrors}
+            options={fieldSet[fieldName]?.options}
           />
         );
       })}

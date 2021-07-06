@@ -68,3 +68,8 @@ $disabled-submit-btn-color: #999999;
     color: $disabled-submit-btn-color;
   }
 }
+
+.input-checkbox-options-wrapper {
+  display: flex;
+  justify-content: space-between;
+}

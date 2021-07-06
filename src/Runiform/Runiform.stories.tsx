@@ -12,7 +12,7 @@ import {
   First,
   Last,
 } from './validators';
-import { InputType } from './types';
+import { SimpleInputType } from './types';
 
 const stories = storiesOf('Runiform', module);
 
@@ -25,7 +25,7 @@ stories.add('default', () => (
     <Runiform
       fieldSet={{
         firstName: {
-          type: InputType.text,
+          type: SimpleInputType.text,
           label: 'First Name:',
           placeholder: 'Please enter your first name...',
           value: '',
@@ -36,7 +36,7 @@ stories.add('default', () => (
           ],
         },
         lastName: {
-          type: InputType.text,
+          type: SimpleInputType.text,
           label: 'Last Name:',
           value: '',
           validators: [
@@ -46,7 +46,7 @@ stories.add('default', () => (
           ],
         },
         nickName: {
-          type: InputType.text,
+          type: SimpleInputType.text,
           label: 'Nickname:',
           value: '',
           validators: [
@@ -56,12 +56,12 @@ stories.add('default', () => (
           ],
         },
         noValidation: {
-          type: InputType.text,
+          type: SimpleInputType.text,
           label: 'No validation:',
           value: '',
         },
         agreement: {
-          type: InputType.checkbox,
+          type: SimpleInputType.checkbox,
           label: 'I agree with providing my information',
           value: false,
           validators: [All.empty, required('Please confirm')],
@@ -78,7 +78,7 @@ stories.add('Shows all error messages', () => (
     <Runiform
       fieldSet={{
         firstName: {
-          type: InputType.text,
+          type: SimpleInputType.text,
           label: 'First Name:',
           placeholder: 'Please enter your first name...',
           value: '',
@@ -101,7 +101,7 @@ stories.add('Shows first error message', () => (
     <Runiform
       fieldSet={{
         firstName: {
-          type: InputType.text,
+          type: SimpleInputType.text,
           label: 'First Name:',
           placeholder: 'Please enter your first name...',
           value: '',
@@ -124,7 +124,7 @@ stories.add('Shows last error message', () => (
     <Runiform
       fieldSet={{
         firstName: {
-          type: InputType.text,
+          type: SimpleInputType.text,
           label: 'First Name:',
           placeholder: 'Please enter your first name...',
           value: '',
@@ -147,7 +147,7 @@ stories.add('No validation', () => (
     <Runiform
       fieldSet={{
         firstName: {
-          type: InputType.text,
+          type: SimpleInputType.text,
           label: 'First Name:',
           placeholder: 'Please enter your first name...',
           value: '',

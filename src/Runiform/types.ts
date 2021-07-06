@@ -1,31 +1,45 @@
 import { Validator, ValidatorResult } from './validators';
 
-export enum InputType {
+export enum SimpleInputType {
   text = 'text',
   checkbox = 'checkbox',
 }
 
+export enum ComplexInputType {
+  radio = 'radio',
+}
+
 export type ValuesTypeMap = {
-  [InputType.text]: string;
-  [InputType.checkbox]: boolean;
+  [SimpleInputType.text]: string;
+  [SimpleInputType.checkbox]: boolean;
+  [ComplexInputType.radio]: string;
 };
 
 export type Validators<T> = [ValidatorResult, ...Validator<T>[]];
 
-type DistinctFields<T extends InputType> = {
+type SimpleField<T extends SimpleInputType> = {
   type: T;
   value: ValuesTypeMap[T];
   validators?: Validators<ValuesTypeMap[T]>;
 };
 
-type MakeFieldConfiguration<T extends InputType> = DistinctFields<T> & {
-  label?: string;
-  placeholder?: string;
+type ComplexField<T extends ComplexInputType> = {
+  type: T;
+  value: ValuesTypeMap[T] | undefined;
+  options: { value: T; label: string }[];
+  validators?: Validators<ValuesTypeMap[T]>;
 };
 
+type MakeSimpleFieldConfiguration<T extends SimpleInputType> =
+  SimpleField<T> & {
+    label?: string;
+    placeholder?: string;
+  };
+
 export type FieldConfiguration =
-  | MakeFieldConfiguration<InputType.text>
-  | MakeFieldConfiguration<InputType.checkbox>;
+  | MakeSimpleFieldConfiguration<SimpleInputType.text>
+  | MakeSimpleFieldConfiguration<SimpleInputType.checkbox>
+  | ComplexField<ComplexInputType.radio>;
 
 export type FieldSet = { [key: string]: FieldConfiguration };
 

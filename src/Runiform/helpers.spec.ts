@@ -5,7 +5,7 @@ import {
   isFormInvalid,
   validatedAllFields,
 } from './helpers';
-import { ActionType, FieldSet, InputType } from './types';
+import { ActionType, FieldSet, SimpleInputType } from './types';
 import {
   maxLength,
   minLength,
@@ -71,11 +71,11 @@ describe('createInitialState', () => {
     expect(
       createInitialState({
         field1: {
-          type: InputType.text,
+          type: SimpleInputType.text,
           value: 'initial value',
         },
         field2: {
-          type: InputType.text,
+          type: SimpleInputType.text,
           value: '',
         },
       })
@@ -89,7 +89,7 @@ describe('createInitialState', () => {
 describe('createReducer', () => {
   const fieldSet: FieldSet = {
     field1: {
-      type: InputType.text,
+      type: SimpleInputType.text,
       value: '',
       validators: [
         All.empty,
@@ -98,7 +98,7 @@ describe('createReducer', () => {
       ],
     },
     field2: {
-      type: InputType.text,
+      type: SimpleInputType.text,
       value: '',
       validators: [
         All.empty,
@@ -159,7 +159,7 @@ describe('createReducer', () => {
 describe('validatedAllFields', () => {
   const fieldSet: FieldSet = {
     field1: {
-      type: InputType.text,
+      type: SimpleInputType.text,
       value: '',
       validators: [
         All.empty,
@@ -168,7 +168,7 @@ describe('validatedAllFields', () => {
       ],
     },
     field2: {
-      type: InputType.text,
+      type: SimpleInputType.text,
       value: '',
       validators: [
         All.empty,

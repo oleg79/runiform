@@ -3,13 +3,13 @@ import { fireEvent, render } from '@testing-library/react';
 
 import { Runiform } from '.';
 import { maxLength, minLength, required, All, startsWith } from './validators';
-import { FieldSet, InputType} from './types';
+import { FieldSet, SimpleInputType } from './types';
 
 describe('Runiform', () => {
   const handleSubmit = jest.fn();
   const fieldSet: FieldSet = {
     firstName: {
-      type: InputType.text,
+      type: SimpleInputType.text,
       value: '',
       validators: [
         All.empty,
@@ -18,7 +18,7 @@ describe('Runiform', () => {
       ],
     },
     lastName: {
-      type: InputType.text,
+      type: SimpleInputType.text,
       value: '',
       validators: [
         All.empty,
@@ -28,7 +28,7 @@ describe('Runiform', () => {
       ],
     },
     nickname: {
-      type: InputType.text,
+      type: SimpleInputType.text,
       value: '',
     },
   };

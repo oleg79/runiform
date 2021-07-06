@@ -1,7 +1,7 @@
 import {
   ActionType,
   FieldSet,
-  InputType,
+  SimpleInputType,
   RuniformAction,
   RuniformState,
   Validators,
@@ -38,7 +38,7 @@ export const createReducer =
   (fieldSet: FieldSet) =>
   (
     state: RuniformState,
-    action: RuniformAction<ValuesTypeMap[InputType]>
+    action: RuniformAction<ValuesTypeMap[SimpleInputType]>
   ): RuniformState => {
     switch (action.type) {
       case ActionType.setValue:

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ActionType, FieldSet, InputType, RuniformState } from './types';
+import { ActionType, FieldSet, SimpleInputType, RuniformState } from './types';
 import {
   createInitialState,
   createReducer,
@@ -18,9 +18,9 @@ type RuniformProps = {
   styles?: typeof defaultStyles;
 };
 
-const typeToComponentMap: Record<InputType, React.FC<FieldProps<any>>> = {
-  [InputType.text]: TextField,
-  [InputType.checkbox]: CheckboxField,
+const typeToComponentMap: Record<SimpleInputType, React.FC<FieldProps<any>>> = {
+  [SimpleInputType.text]: TextField,
+  [SimpleInputType.checkbox]: CheckboxField,
 };
 
 export const Runiform: React.FC<RuniformProps> = ({
